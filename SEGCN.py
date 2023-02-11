@@ -415,7 +415,7 @@ if __name__ == "__main__":
             parser.add_argument('--pretrain_path', type=str, default='pkl')
             parser.add_argument('--lambda_1', type=float, default=1.0)
             parser.add_argument('--lambda_2', type=float, default=1.0)
-            parser.add_argument('--epoch', type=int, default=400)
+            parser.add_argument('--epoch', type=int, default=200)
             args = parser.parse_args()
             args.cuda = torch.cuda.is_available()
             print("use cuda: {}".format(args.cuda))
