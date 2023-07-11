@@ -15,5 +15,5 @@ We have added comments in the code, the specific details can correspond to the e
 + Step 1: set the hyperparameters for the specific dataset;
 + Step 2: python SEGCN.py --name [data_name]
 * For examle, if you would like to run SEGCN on the usps dataset, you need to
-* first set {10, 100} for USPS;
-* then run the command "python SEGCN.py --name usps"
+  * first set {10, 100} for USPS;
+  * then run the command "python SEGCN.py --name usps"
