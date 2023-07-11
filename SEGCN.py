@@ -142,7 +142,7 @@ class SEGCN(nn.Module):
         x_array = list(np.shape(x))
         n_x = x_array[0]
 
-        #第一个创新点 添加相似矩阵到结构信息，增强结构
+        #enhance structure
         adj_dense = adj.to_dense()
         adj_s = adj_dense + self.beta * sim
 
@@ -178,7 +178,7 @@ class SEGCN(nn.Module):
         z4 = self.agcn_3(m31_broadcast.mul(z3)+m32_broadcast.mul(h3), adj_s)
 
 
-        #第二个创新点，嵌入向量扩展添加全局结构信息
+        #global embedding
         z_all_i = self.aphla_41 * z4 + self.aphla_42 * z
         z_all = torch.spmm(adj_s, z_all_i)
         S = torch.mm(z_all, z_all.t())
@@ -186,7 +186,7 @@ class SEGCN(nn.Module):
         z_all_s = torch.mm(S, z_all)
         z_q = self.aphla * z_all_s + z_all
 
-        #重构结构矩阵损失
+        #adj reconstruction
         Sim_z = F.softmax(torch.mm(z_q, z_q.t()), dim=1)
 
 
@@ -208,8 +208,7 @@ class SEGCN(nn.Module):
         net_output = torch.cat((tile_u0.mul(z1), tile_u1.mul(z2), tile_u2.mul(z3), tile_u3.mul(z4), tile_u4.mul(z)), 1 )   
         net_output = self.agcn_z(net_output, adj_s, active=False)
         predict = F.softmax(net_output, dim=1)
-
-        #聚合所有特征嵌入向量，添加损失函数
+        
         x_output = torch.cat((tile_u0.mul(h1), tile_u1.mul(h2), tile_u2.mul(h3), tile_u3.mul(z)), 1)
         Sim_x = F.softmax(torch.mm(x_output, x_output.t()), dim=1)
 
